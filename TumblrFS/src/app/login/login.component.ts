@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { environment } from '../../environments/environment';
-import * as tumblr from 'tumblr.js';
+import { TumblrApiService } from '../services';
 
 @Component({
   selector: 'login',
@@ -9,16 +8,9 @@ import * as tumblr from 'tumblr.js';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  constructor(private tumblrApi: TumblrApiService) { }
 
   ngOnInit() {
-
-    var client = tumblr.createClient({
-      consumer_key: environment.consumer_key,
-      consumer_secret: environment.secret_key,
-      token: '<oauth token>',
-      token_secret: '<oauth token secret>'
-    });
 
   }
 
