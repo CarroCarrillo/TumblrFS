@@ -1,3 +1,11 @@
-<p>
-  login works!
-</p>
+<div class="biggest" *ngIf="posts && posts[index]" (click)="next()">
+  <ng-container [ngSwitch]="posts[index].type">
+    <video controls class="biggest" *ngSwitchCase="'video'" src="{{ posts[index].video_url }}"></video>
+    <img class="biggest" *ngSwitchCase="'photo'" src="{{ posts[index].photos[photo].original_size.url }}" alt="">
+    <div *ngSwitchCase="'text'">
+      <h2>{{ posts[index].title }}</h2>
+      <div [innerHTML]="posts[index].body"></div>
+    </div>
+    <div *ngSwitchDefault>Tipo: {{ posts[index].type }}</div>
+  </ng-container>
+</div>

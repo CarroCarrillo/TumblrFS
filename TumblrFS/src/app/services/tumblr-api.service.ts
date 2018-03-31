@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
-
 import { environment } from '../../environments/environment';
-import * as tumblr from 'tumblr.js';
+
 
 @Injectable()
 export class TumblrApiService {
   basepath = 'https://api.tumblr.com/';
   version = 'v2';
-  client;
+  direccion = 'fetishandbdsm.tumblr.com';
   tumblrProvider;
 
   private headers = new Headers({
@@ -17,16 +16,14 @@ export class TumblrApiService {
   });
 
   constructor(private http: Http) {
-    var client = tumblr.createClient({
-      consumer_key: 'rYDQyAQHEpbcyqbfNydHCvLu2NW1xaVmKopFvb9cFGS75fh5pD',
-      consumer_secret: 'JIrQXJJdlLSZRdguE65ZKqeEF1wvQ1GZ0Lh28GSUjEdAo2lw79',
-      token: 'EIiZ2EK8hCDhVRcwYULGd1f4oMdlP3MSE1HQjEsc48KrtH5PX1',
-      token_secret: 'QtEFlX3UlLePhGchvRol70X8GUvoJScRf1jSCM4Q743n2pNycj'
-    });
 
-    // Make the request
-    this.client.userInfo(function (err, data) {
-      console.log(data);
+  }
+
+  getColorbrillantePosts() {
+    return this.apiCall('GET', 'blog/' + this.direccion + '/posts', {
+      api_key: environment.consumer_key
+    }).then(data => {
+      return JSON.parse(data._body);
     });
   }
 
@@ -38,7 +35,7 @@ export class TumblrApiService {
 
     if (method == 'GET' && params != undefined) {
       var keys = Object.keys(params);
-      var values = (<any> Object).values(params);
+      var values = (<any>Object).values(params);
       path += '?';
 
       for (var i = 0; i < keys.length; i++) {
