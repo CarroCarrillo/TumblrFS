@@ -7,7 +7,6 @@ import { environment } from '../../environments/environment';
 export class TumblrApiService {
   basepath = 'https://api.tumblr.com/';
   version = 'v2';
-  direccion = 'fetishandbdsm.tumblr.com';
   tumblrProvider;
 
   private headers = new Headers({
@@ -20,11 +19,25 @@ export class TumblrApiService {
   }
 
   getColorbrillantePosts() {
-    return this.apiCall('GET', 'blog/' + this.direccion + '/posts', {
+    return this.apiCall('GET', 'blog/' + environment.direccion + '/posts', {
       api_key: environment.consumer_key
     }).then(data => {
       return JSON.parse(data._body);
     });
+  }
+
+  auth() {
+    return this.http.request('https://www.tumblr.com/oauth/authorize', {
+      method: 'POST',
+      body: {consumer_key: 'rYDQyAQHEpbcyqbfNydHCvLu2NW1xaVmKopFvb9cFGS75fh5pD', consumer_secret: 'JIrQXJJdlLSZRdguE65ZKqeEF1wvQ1GZ0Lh28GSUjEdAo2lw79'},
+      headers: this.headers
+    })
+      .toPromise();
+    // return this.apiCall('POST', '', {
+    //   api_key: environment.consumer_key
+    // }).then(data => {
+    //   return JSON.parse(data._body);
+    // });
   }
 
   url(path): string {
