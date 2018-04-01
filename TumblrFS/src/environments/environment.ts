@@ -10,5 +10,5 @@ export const environment = {
   user_token: 'EIiZ2EK8hCDhVRcwYULGd1f4oMdlP3MSE1HQjEsc48KrtH5PX1',
   token_secret: 'QtEFlX3UlLePhGchvRol70X8GUvoJScRf1jSCM4Q743n2pNycj',
 
-  direccion: 'nickbond30.tumblr.com'
+  direccion: 'gayballbustingfiction.tumblr.com'
 };

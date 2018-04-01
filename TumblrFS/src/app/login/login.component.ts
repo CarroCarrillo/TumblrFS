@@ -1,8 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { TumblrApiService } from '../services';
-import * as oauthSignature from 'oauth-signature';
 import { environment } from '../../environments/environment';
-declare var $: any;
 
 @Component({
   selector: 'login',
@@ -47,6 +45,21 @@ export class LoginComponent implements OnInit {
     // myRedirect('https://www.tumblr.com/oauth/request_token', environment.consumer_key, environment.secret_key);
   }
 
+  @HostListener('document:keydown', ['$event']) keyDown(event: KeyboardEvent) {
+    console.log(event);
+    switch(event.key) {
+      case 'Right':
+        this.next();
+        break;
+      case 'Left':
+        this.previous();
+        break;
+      case 'Enter':
+        this.next();
+        break;
+    }
+  }
+
   ngOnInit() {
     this.tumblrApi.getColorbrillantePosts().then(posts => {
       this.posts = posts.response.posts;
@@ -66,6 +79,24 @@ export class LoginComponent implements OnInit {
       }
     } else {
       this.index++;
+    }
+
+    console.log('Index: ' + this.index + ' - Photo: ' + this.photo);
+  }
+
+  previous() {
+    this.photo--;
+    if (this.posts[this.index].photos) {
+      if (!this.posts[this.index].photos[this.photo]) {
+        this.index--;
+        this.photo = this.posts[this.index].photos.length - 1;
+        if (!this.posts[this.index]) {
+          this.index = this.posts.length;
+          this.photo = this.posts[this.index].photos.length - 1;
+        }
+      }
+    } else {
+      this.index--;
     }
 
     console.log('Index: ' + this.index + ' - Photo: ' + this.photo);
