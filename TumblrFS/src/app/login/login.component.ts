@@ -12,46 +12,18 @@ export class LoginComponent implements OnInit {
   posts;
   index = 0;
   photo = 0;
+  offset = 0;
+  limit = 20;
 
-  constructor(private tumblrApi: TumblrApiService) {
-    // oauthSignature.generate('GET', url, parameters, consumerSecret, tokenSecret, options)
-    // this.tumblrApi.auth().then(res => {
-    //   console.log(res);
-    // });
-    // var myRedirect = function(redirectUrl, key, secret) {
-    //   var form = $('<form action="' + redirectUrl + '" method="post">' +
-    //   '<input type="hidden" name="oauth_consumer_key" value="' + key + '">'+
-    //   '</input><input type="hidden" name="consumer_secret" value="' + secret + '"></input>' +
-    //   '</input><input type="hidden" name="oauth_signature" value="' + '' + '"></input>' +
-    //   '</form>');
-    //   $('body').append(form);
-    //   $(form).submit();
-    // };
-    // var fd = new FormData();
-    // fd.append('consumer_key', environment.consumer_key);
-    // fd.append('consumer_secret', environment.secret_key);
-    // var req = new XMLHttpRequest();
-    // req.open('POST', 'https://api.tumblr.com/console/auth', true);
-    // req.onreadystatechange = function (aEvt) {
-    //   if (req.readyState == 4) {
-    //     if (req.status == 200)
-    //       console.log(req.responseText);
-    //     else
-    //       console.log("Error loading page\n");
-    //   }
-    // };
-    // // req.setRequestHeader('Access-Control-Allow-Origin', '*');
-    // req.send(fd);
-    // myRedirect('https://www.tumblr.com/oauth/request_token', environment.consumer_key, environment.secret_key);
-  }
+  constructor(private tumblrApi: TumblrApiService) {}
 
   @HostListener('document:keydown', ['$event']) keyDown(event: KeyboardEvent) {
     console.log(event);
     switch(event.key) {
-      case 'Right':
+      case 'ArrowRight':
         this.next();
         break;
-      case 'Left':
+      case 'ArrowLeft':
         this.previous();
         break;
       case 'Enter':
@@ -61,8 +33,9 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.tumblrApi.getColorbrillantePosts().then(posts => {
-      this.posts = posts.response.posts;
+    this.tumblrApi.getDashboard(this.offset).then(posts => {
+      console.log(posts);
+      this.posts = posts;
     });
   }
 
@@ -73,8 +46,10 @@ export class LoginComponent implements OnInit {
         this.index++;
         this.photo = 0;
         if (!this.posts[this.index]) {
+          this.offset++;
           this.index = 0;
           this.photo = 0;
+          this.ngOnInit();
         }
       }
     } else {
@@ -91,8 +66,10 @@ export class LoginComponent implements OnInit {
         this.index--;
         this.photo = this.posts[this.index].photos.length - 1;
         if (!this.posts[this.index]) {
-          this.index = this.posts.length;
+          this.offset = this.offset > 0 ? this.offset - 1 : 0;
+          this.index = this.limit;
           this.photo = this.posts[this.index].photos.length - 1;
+          this.ngOnInit();
         }
       }
     } else {
@@ -100,6 +77,16 @@ export class LoginComponent implements OnInit {
     }
 
     console.log('Index: ' + this.index + ' - Photo: ' + this.photo);
+  }
+
+  getVideo(video) {
+    console.log(typeof video);
+    console.log(video);
+    let sub = video.substring(video.indexOf('hdUrl'));
+    console.log(sub);
+    let url = sub.split('\"')[1] != ":false," ? sub.split('\"')[2] : video.substring(video.indexOf('<source src=')).split('"')[1];
+    console.log(url);
+    return url;
   }
 
 }

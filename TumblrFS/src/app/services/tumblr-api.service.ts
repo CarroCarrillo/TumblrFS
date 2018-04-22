@@ -5,8 +5,7 @@ import { environment } from '../../environments/environment';
 
 @Injectable()
 export class TumblrApiService {
-  basepath = 'https://api.tumblr.com/';
-  version = 'v2';
+  basepath = 'http://localhost:8080/';
   tumblrProvider;
 
   private headers = new Headers({
@@ -18,14 +17,19 @@ export class TumblrApiService {
 
   }
 
-  getColorbrillantePosts() {
-    return this.apiCall('GET', 'blog/' + environment.direccion + '/posts', {
-      api_key: environment.consumer_key
+  getDashboard(offset) {
+    return this.apiCall('GET', 'dashboard', {
+      offset: offset
     }).then(data => {
       return JSON.parse(data._body);
     });
   }
 
+  getPosts() {
+    return this.apiCall('GET', 'posts').then(data => {
+      return JSON.parse(data._body);
+    });
+  }
   auth() {
     return this.http.request('https://www.tumblr.com/oauth/authorize', {
       method: 'POST',
@@ -41,7 +45,7 @@ export class TumblrApiService {
   }
 
   url(path): string {
-    return this.basepath + this.version + '/' + path;
+    return this.basepath + path;
   }
 
   private apiCall(method, path, params?): Promise<any> {
