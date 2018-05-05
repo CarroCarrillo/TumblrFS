@@ -12,10 +12,15 @@ export class LoginComponent implements OnInit {
   posts;
   index = 0;
   photo = 0;
-  offset = 0;
+  since_id = 0;
+  sinceIdArray = new Array<Number>();
   limit = 20;
+  
+  loading;
 
-  constructor(private tumblrApi: TumblrApiService) {}
+  constructor(private tumblrApi: TumblrApiService) {
+    this.sinceIdArray.push(this.since_id);
+  }
 
   @HostListener('document:keydown', ['$event']) keyDown(event: KeyboardEvent) {
     console.log(event);
@@ -33,9 +38,11 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.tumblrApi.getDashboard(this.offset).then(posts => {
+    this.loading = true;
+    this.tumblrApi.getDashboard(this.since_id).then(posts => {
       console.log(posts);
       this.posts = posts;
+      this.loading = false;
     });
   }
 
@@ -46,7 +53,9 @@ export class LoginComponent implements OnInit {
         this.index++;
         this.photo = 0;
         if (!this.posts[this.index]) {
-          this.offset++;
+          this.since_id = this.posts[this.index - 1].id;
+          this.sinceIdArray.push(this.since_id);
+          console.log(this.since_id);
           this.index = 0;
           this.photo = 0;
           this.ngOnInit();
@@ -54,6 +63,7 @@ export class LoginComponent implements OnInit {
       }
     } else {
       this.index++;
+      this.photo = 0;
     }
 
     console.log('Index: ' + this.index + ' - Photo: ' + this.photo);
@@ -66,7 +76,7 @@ export class LoginComponent implements OnInit {
         this.index--;
         this.photo = this.posts[this.index].photos.length - 1;
         if (!this.posts[this.index]) {
-          this.offset = this.offset > 0 ? this.offset - 1 : 0;
+          // Ir hacia atrás en un array de since_id
           this.index = this.limit;
           this.photo = this.posts[this.index].photos.length - 1;
           this.ngOnInit();
@@ -74,6 +84,7 @@ export class LoginComponent implements OnInit {
       }
     } else {
       this.index--;
+      this.photo = this.posts[this.index].photos.length - 1;
     }
 
     console.log('Index: ' + this.index + ' - Photo: ' + this.photo);

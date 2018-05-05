@@ -17,8 +17,8 @@ public class tumblrFSRestController {
 
 	private final String CONSUMER_KEY = "rYDQyAQHEpbcyqbfNydHCvLu2NW1xaVmKopFvb9cFGS75fh5pD";
 	private final String CONSUMER_SECRET = "JIrQXJJdlLSZRdguE65ZKqeEF1wvQ1GZ0Lh28GSUjEdAo2lw79";
-	private final String TOKEN = "sSjg3fS0PyX70iEBn9B4OVgGsKfz2WJauAXymBNm61bs2CrA53";
-	private final String TOKEN_SECRET = "05GznVDePztHPl9vXqCx47dp5bw5gHiakF4FElHIuhXQ8xjbPe";
+	private final String TOKEN = "NY4ToBtEMqUgbViE5yoCbELbA1qS57QQaEYz8MpRL9iyEDRsWn";
+	private final String TOKEN_SECRET = "WvVEDg8ww12EVy8YCH0gy1dsLYufKQGWGnWI3HFr0vtWODHgho";
 	private JumblrClient client;
 	
 	tumblrFSRestController() {
@@ -28,9 +28,9 @@ public class tumblrFSRestController {
 	
 	@CrossOrigin(origins = "http://localhost:4200")
 	@RequestMapping("/dashboard")
-    public List<Post> dashboard(@RequestParam(value="offset", defaultValue="0") int offset) {
+    public List<Post> dashboard(@RequestParam(value="since_id", defaultValue="0") String since_id) {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("offset", offset);
+		params.put("since_id", since_id);
 		List<Post> posts = client.userDashboard(params);
 
 		return posts;

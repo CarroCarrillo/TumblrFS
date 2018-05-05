@@ -17,9 +17,9 @@ export class TumblrApiService {
 
   }
 
-  getDashboard(offset) {
+  getDashboard(since_id) {
     return this.apiCall('GET', 'dashboard', {
-      offset: offset
+      since_id: since_id
     }).then(data => {
       return JSON.parse(data._body);
     });
