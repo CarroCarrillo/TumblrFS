@@ -17,8 +17,8 @@ public class tumblrFSRestController {
 
 	private final String CONSUMER_KEY = "rYDQyAQHEpbcyqbfNydHCvLu2NW1xaVmKopFvb9cFGS75fh5pD";
 	private final String CONSUMER_SECRET = "JIrQXJJdlLSZRdguE65ZKqeEF1wvQ1GZ0Lh28GSUjEdAo2lw79";
-	private final String TOKEN = "NY4ToBtEMqUgbViE5yoCbELbA1qS57QQaEYz8MpRL9iyEDRsWn";
-	private final String TOKEN_SECRET = "WvVEDg8ww12EVy8YCH0gy1dsLYufKQGWGnWI3HFr0vtWODHgho";
+	private final String TOKEN = "m68yuhtI4EGXgRgbMJV0UEpzFIlG8ggUZRpAS3hrOeXndlK7Ww";
+	private final String TOKEN_SECRET = "opCwxSJNGwqeFdHDJN6a2dncMRRinZaj2L03gKhrfKtA5ccLFv";
 	private JumblrClient client;
 	
 	tumblrFSRestController() {
