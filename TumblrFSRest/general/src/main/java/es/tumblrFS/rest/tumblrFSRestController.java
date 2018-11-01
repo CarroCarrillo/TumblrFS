@@ -28,9 +28,9 @@ public class tumblrFSRestController {
 	
 	@CrossOrigin(origins = "http://localhost:4200")
 	@RequestMapping("/dashboard")
-    public List<Post> dashboard(@RequestParam(value="since_id", defaultValue="0") String since_id) {
+    public List<Post> dashboard(@RequestParam(value="offset", defaultValue="0") String offset) {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("since_id", since_id);
+		params.put("offset", offset);
 		List<Post> posts = client.userDashboard(params);
 
 		return posts;

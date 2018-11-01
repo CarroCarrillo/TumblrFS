@@ -7,6 +7,8 @@ import { TumblrApiService } from './services';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 
+import { NgxLoadingModule } from 'ngx-loading';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -14,7 +16,8 @@ import { LoginComponent } from './login/login.component';
   ],
   imports: [
     BrowserModule,
-    HttpModule
+    HttpModule,
+    NgxLoadingModule.forRoot({})
   ],
   providers: [
     TumblrApiService

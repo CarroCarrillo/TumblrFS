@@ -12,15 +12,16 @@ export class LoginComponent implements OnInit {
   posts;
   index = 0;
   photo = 0;
-  since_id = 0;
-  sinceIdArray = new Array<number>();
+  // since_id = 0;
+  // sinceIdArray = new Array<number>();
   limit = 20;
+  offset = 0;
   forward = true;
   
   loading;
 
   constructor(private tumblrApi: TumblrApiService) {
-    this.sinceIdArray.push(this.since_id);
+    // this.sinceIdArray.push(this.since_id);
   }
 
   @HostListener('document:keydown', ['$event']) keyDown(event: KeyboardEvent) {
@@ -40,12 +41,14 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true;
-    this.tumblrApi.getDashboard(this.since_id).then(posts => {
+    this.tumblrApi.getDashboard(this.offset).then(posts => {
       console.log(posts);
       this.posts = posts;
       if(!this.forward) {
         this.index = this.posts.length - 1;
         this.photo = this.photoPrevious;
+      } else {
+
       }
       this.loading = false;
     });
@@ -58,18 +61,18 @@ export class LoginComponent implements OnInit {
       if (!this.posts[this.index].photos[this.photo]) {
         this.index++;
         this.photo = 0;
-        if (!this.posts[this.index]) {
-          this.since_id = this.posts[this.index - 1].id;
-          this.sinceIdArray.push(this.since_id);
-          console.log(this.since_id);
-          this.index = 0;
-          this.photo = 0;
-          this.ngOnInit();
-        }
+        console.log(this.posts[this.index]);
       }
     } else {
       this.index++;
       this.photo = 0;
+    }
+
+    if (!this.posts[this.index]) {
+      this.offset += this.limit;
+      this.index = 0;
+      this.photo = 0;
+      this.ngOnInit();
     }
 
     console.log('Index: ' + this.index + ' - Photo: ' + this.photo);
@@ -83,9 +86,7 @@ export class LoginComponent implements OnInit {
         this.index--;
         this.photo = this.posts[this.index].photos.length - 1;
         if (!this.posts[this.index]) {
-          // Ir hacia atrás en un array de since_id
-          this.index = this.limit;
-          this.photo = this.posts[this.index].photos.length - 1;
+          this.offset -= this.limit;
           this.ngOnInit();
         }
       }
@@ -93,8 +94,9 @@ export class LoginComponent implements OnInit {
       this.index--;
       this.photo = this.photoPrevious;
     } else {
-      this.sinceIdArray.pop();
-      this.since_id = this.sinceIdArray[this.sinceIdArray.length - 1];
+      // this.sinceIdArray.pop();
+      // this.since_id = this.sinceIdArray[this.sinceIdArray.length - 1];
+      this.offset -= this.limit;
       this.ngOnInit();
     }
 
