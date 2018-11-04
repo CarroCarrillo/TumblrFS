@@ -57,6 +57,7 @@ export class LoginComponent implements OnInit {
   next() {
     this.forward = true;
     this.photo++;
+    this.loading = true;
     if (this.posts[this.index].photos) {
       if (!this.posts[this.index].photos[this.photo]) {
         this.index++;
@@ -81,6 +82,7 @@ export class LoginComponent implements OnInit {
   previous() {
     this.forward = false;
     this.photo--;
+    this.loading = true;
     if (this.posts[this.index].photos && this.photo > 0) {
       if (!this.posts[this.index].photos[this.photo] && this.index > 0) {
         this.index--;
@@ -115,6 +117,10 @@ export class LoginComponent implements OnInit {
 
   private get photoPrevious() {
     return (this.posts[this.index].type === 'link' || 'text') ? 0 : this.posts[this.index].photos.length - 1;
+  }
+
+  setLoading(loading: boolean) {
+    this.loading = loading;
   }
 
 }
