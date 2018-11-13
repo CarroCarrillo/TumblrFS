@@ -5,7 +5,7 @@ import { environment } from '../../environments/environment';
 
 @Injectable()
 export class TumblrApiService {
-  basepath = 'http://localhost:8080/';
+  basepath = environment.base_path;
   tumblrProvider;
 
   private headers = new Headers({

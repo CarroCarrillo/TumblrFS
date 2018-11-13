@@ -10,5 +10,7 @@ export const environment = {
   user_token: 'm68yuhtI4EGXgRgbMJV0UEpzFIlG8ggUZRpAS3hrOeXndlK7Ww',
   token_secret: 'opCwxSJNGwqeFdHDJN6a2dncMRRinZaj2L03gKhrfKtA5ccLFv',
 
+  base_path: 'http://localhost:8080/',
+
   direccion: 'gayballbustingfiction.tumblr.com'
 };
