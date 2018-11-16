@@ -38,10 +38,12 @@ public class tumblrFSRestController {
 	
 	@CrossOrigin(origins = "http://localhost:4200")
 	@RequestMapping("/posts")
-    public List<Post> posts() {
-	
+    public List<Post> posts(@RequestParam(value="blogName", defaultValue="colorbrillante.tumblr.com") String blogName, @RequestParam(value="offset", defaultValue="0") String offset) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("offset", offset);
+		
 		// Make the request
-		List<Post> posts = client.blogPosts("colorbrillante.tumblr.com");
+		List<Post> posts = client.blogPosts(blogName, params);
 		
 		return posts;
 	}

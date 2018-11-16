@@ -25,8 +25,11 @@ export class TumblrApiService {
     });
   }
 
-  getPosts() {
-    return this.apiCall('GET', 'posts').then(data => {
+  getPosts(blog, offset) {
+    return this.apiCall('GET', 'posts', {
+      blogName: blog,
+      offset: offset
+    }).then(data => {
       return JSON.parse(data._body);
     });
   }

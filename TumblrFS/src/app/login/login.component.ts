@@ -17,6 +17,7 @@ export class LoginComponent implements OnInit {
   limit = 20;
   offset = 0;
   forward = true;
+  blog = '26jenny01.tumblr.com';
   
   loading;
 
@@ -41,17 +42,32 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true;
-    this.tumblrApi.getDashboard(this.offset).then(posts => {
-      console.log(posts);
-      this.posts = posts;
-      if(!this.forward) {
-        this.index = this.posts.length - 1;
-        this.photo = this.photoPrevious;
-      } else {
 
-      }
-      this.loading = false;
-    });
+    if(this.blog === 'dashboard') {
+      this.tumblrApi.getDashboard(this.offset).then(posts => {
+        console.log(posts);
+        this.posts = posts;
+        if(!this.forward) {
+          this.index = this.posts.length - 1;
+          this.photo = this.photoPrevious;
+        } else {
+
+        }
+        this.loading = false;
+      });
+    } else {
+      this.tumblrApi.getPosts(this.blog, this.offset).then(posts => {
+        console.log(posts);
+        this.posts = posts;
+        if(!this.forward) {
+          this.index = this.posts.length - 1;
+          this.photo = this.photoPrevious;
+        } else {
+
+        }
+        this.loading = false;
+      });
+    }
   }
 
   next() {
@@ -63,20 +79,25 @@ export class LoginComponent implements OnInit {
         this.index++;
         this.photo = 0;
         console.log(this.posts[this.index]);
+        this.noIndex();
       }
     } else {
       this.index++;
       this.photo = 0;
     }
 
+    this.noIndex();
+
+    console.log('Index: ' + this.index + ' - Photo: ' + this.photo);
+  }
+
+  private noIndex() {
     if (!this.posts[this.index]) {
       this.offset += this.limit;
       this.index = 0;
       this.photo = 0;
       this.ngOnInit();
     }
-
-    console.log('Index: ' + this.index + ' - Photo: ' + this.photo);
   }
 
   previous() {
